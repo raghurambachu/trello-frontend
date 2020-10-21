@@ -1,0 +1,18 @@
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+.header-center {
+  left: 50%;
+  transform: translateX(-50%);
+}
+.wrapper {
+  width: 1024px;
+}
+
+.bg-theme {
+  background-image: url("../images/themes/theme-1.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
