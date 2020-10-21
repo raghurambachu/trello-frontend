@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useContext } from "react";
 import { FaTrello } from "react-icons/fa";
 import { GiSoundWaves } from "react-icons/gi";
 import { BsFillPeopleFill, BsPlus, BsPersonFill } from "react-icons/bs";
@@ -10,12 +10,12 @@ import HeaderAfterLogin from "../header/HeaderAfterLogin";
 import BoardItem from "./BoardItem";
 import AddBoard from "./AddBoard";
 import CreateTeam from "../team/CreateTeam";
-
-function handleBoardClick() {
-  console.log("clicked");
-}
+import HeaderContext from "../../context/HeaderContext";
+import useOnClickOutside from "../../utils/useOnClickOutside";
 
 function Dashboard() {
+  const context = useContext(HeaderContext);
+  const { headerState, dispatchHeader } = context;
   const [showBoard, setShowBoard] = React.useState(false);
   const [showTeam, setShowTeam] = React.useState(false);
   const openTeam = () => setShowTeam(true);
@@ -23,12 +23,16 @@ function Dashboard() {
   const openBoard = () => setShowBoard(true);
   const closeBoard = () => setShowBoard(false);
 
+  const headerRef = useRef();
+  useOnClickOutside(headerRef, () => dispatchHeader({ type: "close-all" }));
   const addNewTeam = (team) => {
     // push it to the teams array
   };
   return (
     <div className="min-h-screen">
-      <HeaderAfterLogin />
+      <div ref={headerRef}>
+        <HeaderAfterLogin header={{ headerState, dispatchHeader }} />
+      </div>
       <div className="grid grid-cols-10 gap-8 py-12 mx-auto text-gray-800 wrapper">
         <div className="col-span-3">
           <div className="sticky top-0">
@@ -118,7 +122,7 @@ function Dashboard() {
             </div>
             <ul className="flex personal-board-list">
               <li>
-                <BoardItem onClick={handleBoardClick} />
+                <BoardItem />
               </li>
             </ul>
           </div>

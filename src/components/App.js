@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useReducer, useState, useEffect } from "react";
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import UserContext from "../context/UserContext";
 import axios from "axios";
@@ -12,6 +11,10 @@ import showCard from "./card/ShowCard";
 // import Account from "./header/Account";
 // import HeaderPlus from "./header/HeaderPlus";
 import Dashboard from "./dashboard/Dashboard";
+import HeaderContext, {
+  initialHeaderState,
+  headerReducer,
+} from "../context/HeaderContext";
 // import CreateLabel from "./label/CreateLabel";
 // import DueDate from "./card/DueDate";
 // import HeaderAfterLogin from "./header/HeaderAfterLogin";
@@ -68,6 +71,10 @@ function PrivateRoutes() {
 
 function App(props) {
   const [state, setState] = useState({ user: null });
+  const [headerState, dispatchHeader] = useReducer(
+    headerReducer,
+    initialHeaderState
+  );
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/verify`)
@@ -76,7 +83,9 @@ function App(props) {
   }, []);
   return (
     <UserContext.Provider value={{ state, setState }}>
-      {state?.user?._id ? <PrivateRoutes /> : <PublicRoutes />}
+      <HeaderContext.Provider value={{ headerState, dispatchHeader }}>
+        {state?.user?._id ? <PrivateRoutes /> : <PublicRoutes />}
+      </HeaderContext.Provider>
     </UserContext.Provider>
   );
 }

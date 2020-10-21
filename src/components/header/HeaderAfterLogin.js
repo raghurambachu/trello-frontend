@@ -9,7 +9,7 @@ import HeaderPlus from "./HeaderPlus";
 import Account from "./Account";
 
 function HeaderAfterLogin(props) {
-  // const { boardState, dispatchBoard } = props.board;
+  // const { headerState, dispatchHeader } = props.header;
   return (
     <div className="relative p-1 bg-blue-600 ">
       <header className="flex justify-between">
@@ -37,29 +37,31 @@ function HeaderAfterLogin(props) {
         <div className="flex space-x-1 right">
           <div className="plus">
             <button
-              onClick={() => props?.board?.dispatchBoard({ type: "show-plus" })}
+              onClick={() =>
+                props?.header?.dispatchHeader({ type: "show-plus" })
+              }
               className="p-2 text-blue-100 bg-blue-300 rounded-sm hover:bg-blue-400 focus:outline-none "
             >
               <BsPlus />
             </button>
-            {props?.board?.boardState.showPlus && (
+            {props?.header?.headerState.showPlus && (
               <div className="absolute right-0 mt-2 bg-white shadow-lg w-80">
-                <HeaderPlus dispatchBoard={props?.board?.dispatchBoard} />
+                <HeaderPlus dispatchHeader={props?.header?.dispatchHeader} />
               </div>
             )}
           </div>
           <div className="account">
             <button
               onClick={() =>
-                props?.board?.dispatchBoard({ type: "show-account" })
+                props?.header?.dispatchHeader({ type: "show-account" })
               }
               className="p-2 text-blue-100 bg-blue-300 rounded-sm hover:bg-blue-400 focus:outline-none "
             >
               <FaUserCircle />
             </button>
-            {props?.board?.boardState.showAccount && (
+            {props?.header?.headerState.showAccount && (
               <div className="absolute right-0 mt-2 bg-white shadow-lg w-80">
-                <Account dispatchBoard={props?.board?.dispatchBoard} />
+                <Account dispatchHeader={props?.header?.dispatchHeader} />
               </div>
             )}
           </div>
