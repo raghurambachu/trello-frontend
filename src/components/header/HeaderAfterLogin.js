@@ -7,14 +7,17 @@ import { FaUserCircle } from "react-icons/fa";
 import trelloLogo from "../../images/trello-logo.png";
 import HeaderPlus from "./HeaderPlus";
 import Account from "./Account";
+import { Link } from "react-router-dom";
 
 function HeaderAfterLogin(props) {
   // const { headerState, dispatchHeader } = props.header;
   return (
-    <div className="relative p-1 bg-blue-600 ">
+    <div className="fixed w-full p-1 bg-blue-600 ">
       <header className="flex justify-between">
         <div className="flex space-x-1 left">
-          <HoverButton>{<IoIosHome size={20} />} </HoverButton>
+          <Link to="/">
+            <HoverButton>{<IoIosHome size={20} />} </HoverButton>
+          </Link>
           <HoverButton>
             <div className="flex items-center">
               <RiTrelloFill />

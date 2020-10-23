@@ -1,9 +1,13 @@
 import React from "react";
 
-function BoardItem() {
+function BoardItem(props) {
   return (
-    <div className="flex items-center justify-center w-64 h-32 bg-gray-300 rounded-sm cursor-pointer hover:bg-gray-400 ">
-      <p>Create new board</p>
+    <div
+      className={`flex items-center justify-center w-48 h-24 ${
+        props.className ? props.className : "bg-gray-300"
+      } rounded-sm cursor-pointer hover:bg-gray-400 `}
+    >
+      <p>{props.name}</p>
     </div>
   );
 }

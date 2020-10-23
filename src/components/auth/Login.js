@@ -30,6 +30,7 @@ function handleSubmit(values, actions, setState, history, context) {
       }
     })
     .catch((err) => {
+      console.log(err.response);
       actions.setSubmitting(false);
       setState((ps) => ({
         authErr: err?.response?.data?.msg,

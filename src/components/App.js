@@ -15,6 +15,10 @@ import HeaderContext, {
   initialHeaderState,
   headerReducer,
 } from "../context/HeaderContext";
+import TeamContext, {
+  initialTeamState,
+  teamReducer,
+} from "../context/TeamContext";
 // import CreateLabel from "./label/CreateLabel";
 // import DueDate from "./card/DueDate";
 // import HeaderAfterLogin from "./header/HeaderAfterLogin";
@@ -57,7 +61,7 @@ function PrivateRoutes() {
       </Route>
       <Route
         exact
-        path="/board"
+        path="/board/:id"
         render={(routeProps) => <Board {...routeProps} />}
       />
       <Route
@@ -75,6 +79,7 @@ function App(props) {
     headerReducer,
     initialHeaderState
   );
+  const [teamState, dispatchTeam] = useReducer(teamReducer, initialTeamState);
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/verify`)
@@ -84,7 +89,9 @@ function App(props) {
   return (
     <UserContext.Provider value={{ state, setState }}>
       <HeaderContext.Provider value={{ headerState, dispatchHeader }}>
-        {state?.user?._id ? <PrivateRoutes /> : <PublicRoutes />}
+        <TeamContext.Provider value={{ teamState, dispatchTeam }}>
+          {state?.user?._id ? <PrivateRoutes /> : <PublicRoutes />}
+        </TeamContext.Provider>
       </HeaderContext.Provider>
     </UserContext.Provider>
   );

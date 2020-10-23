@@ -12,6 +12,7 @@ import DueDate from "./DueDate";
 import AddLabel from "../label/AddLabel";
 import CreateLabel from "../label/CreateLabel";
 import AddMember from "./AddMember";
+import CreateDescription from "./CreateDescription";
 // import useOnClickOutside from "../../utils/useOnClickOutside";
 
 const initialLabelState = { show: false, active: AddLabel };
@@ -29,7 +30,8 @@ function labelReducer(state, action) {
   }
 }
 
-function ShowCard() {
+function ShowCard(props) {
+  const [cardContent, setCardContent] = useState({ card: props.card });
   const [showDate, setShowDate] = useState(false);
   const [editDesc, setEditDesc] = useState(false);
   const [showMember, setShowMember] = useState(false);
@@ -51,9 +53,10 @@ function ShowCard() {
         <div className="flex items-center space-x-4 title">
           <CgTouchpad className="self-start mt-2" size={20} />
           <div>
-            <h3 className="text-xl">cloning Trello</h3>
+            <h3 className="text-xl">{props.card.name}</h3>
             <small>
-              in list <span className="text-base underline">Doing</span>{" "}
+              in list{" "}
+              <span className="text-base underline">{props.listName}</span>{" "}
             </small>
           </div>
         </div>
@@ -87,14 +90,18 @@ function ShowCard() {
               </h3>
               <div>
                 {editDesc ? (
-                  <form className="" onSubmit={() => setEditDesc(false)}>
-                    <textarea
-                      className="block w-full h-16 p-1 mt-4 border-2 border-gray-800 resize-none"
-                      name="edit-desc"
-                    ></textarea>
-                  </form>
+                  <CreateDescription
+                    setCardContent={setCardContent}
+                    setEditDesc={setEditDesc}
+                    cardContent={cardContent}
+                    boardId={props.boardId}
+                  />
                 ) : (
-                  <p onClick={() => setEditDesc(true)}>Start building model</p>
+                  <p onClick={() => setEditDesc(true)}>
+                    {cardContent.card.description
+                      ? cardContent.card.description
+                      : "Click on Edit or on this text to start describing the card."}
+                  </p>
                 )}
               </div>
             </div>

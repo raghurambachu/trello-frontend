@@ -6,11 +6,12 @@ import { Dialog } from "@reach/dialog";
 import Card from "../card/Card";
 import VisuallyHidden from "@reach/visually-hidden";
 import ShowCard from "../card/ShowCard";
-import AddCard from "../card/AddCard";
+import CreateCard from "../card/CreateCard";
 
 import useOnClickOutside from "../../utils/useOnClickOutside";
 
-function handleCardClick(title, openCard) {
+function handleCardClick(card, listName, openCard, setCurrCard) {
+  setCurrCard({ listName, card });
   openCard();
 }
 
@@ -35,6 +36,7 @@ function reducer(state, action) {
 
 function List(props) {
   const [showCard, setShowCard] = useState(false);
+  const [currCard, setCurrCard] = useState({ listName: null, card: null });
   const openCard = () => setShowCard(true);
   const closeCard = () => setShowCard(false);
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -45,7 +47,7 @@ function List(props) {
   useOnClickOutside(titleRef, () => dispatch({ type: "save-title" }));
 
   return (
-    <article className="w-1/5 p-2 text-gray-700 bg-gray-300 rounded-md list">
+    <article className="w-64 p-2 text-gray-700 bg-gray-300 rounded-md shadow-sm list ">
       <div className="mb-2" ref={titleRef}>
         {state.editTitle ? (
           <form onSubmit={() => dispatch({ type: "save-title" })}>
@@ -53,7 +55,7 @@ function List(props) {
               className="w-full p-1 px-2 border-2 border-gray-700"
               type="text"
               value={props.listTitle}
-            />{" "}
+            />
           </form>
         ) : (
           <h3
@@ -65,11 +67,14 @@ function List(props) {
         )}
       </div>
       <ul className="cards">
-        {getCards().map(({ title }) => (
-          <li key={title}>
+        {props?.list?.cards?.map((card) => (
+          <li key={card.name}>
             <Card
-              onClick={() => handleCardClick(title, openCard)}
-              title={title}
+              listId={props.list._id}
+              onClick={() =>
+                handleCardClick(card, props.list.name, openCard, setCurrCard)
+              }
+              title={card.name}
             />
             <Dialog
               style={{ width: "60vw", position: "relative" }}
@@ -86,14 +91,25 @@ function List(props) {
                   <FaTimes />
                 </span>
               </button>
-              <ShowCard />
+              {
+                <ShowCard
+                  boardId={props.boardId}
+                  listName={currCard?.listName}
+                  card={currCard.card}
+                />
+              }
             </Dialog>
           </li>
         ))}
       </ul>
       <div ref={addCardRef} className="mt-2 text-base list-footer">
         {state.addCard ? (
-          <AddCard dispatch={dispatch} />
+          <CreateCard
+            boardId={props.boardId}
+            listId={props.list._id}
+            dispatch={dispatch}
+            closeCard={closeCard}
+          />
         ) : (
           <button
             onClick={() => dispatch({ type: "add-card" })}
@@ -106,17 +122,6 @@ function List(props) {
       </div>
     </article>
   );
-}
-
-function getCards() {
-  return [
-    {
-      title: "Cloning Trello",
-    },
-    {
-      title: "Building cardss",
-    },
-  ];
 }
 
 export default List;

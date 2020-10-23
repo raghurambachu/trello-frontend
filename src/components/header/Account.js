@@ -1,8 +1,29 @@
 import React from "react";
 import { BsPersonFill } from "react-icons/bs";
 import { FaTimes } from "react-icons/fa";
+import axios from "axios";
+import { withRouter } from "react-router-dom";
+import { useContext } from "react";
+import UserContext from "../../context/UserContext";
+import HeaderContext from "../../context/HeaderContext";
+
+function logout(history, setState, dispatchHeader) {
+  axios
+    .get(`${process.env.REACT_APP_BASE_URL}/logout`)
+    .then((res) => {
+      setState({ user: null });
+      history.push("/login");
+    })
+    .catch((err) => {
+      setState({ user: null });
+      history.push("/login");
+    })
+    .finally(() => dispatchHeader({ type: "close-account" }));
+}
 
 function Account(props) {
+  const { setState } = useContext(UserContext);
+  const { dispatchHeader } = useContext(HeaderContext);
   return (
     <div className="relative w-full p-4 text-gray-700 rounded shadow-lg">
       <div className="absolute top-0 right-0">
@@ -22,11 +43,18 @@ function Account(props) {
       </div>
       <hr />
       <ul className="">
-        <li className="px-2 py-1 my-2 rounded hover:bg-gray-300">Profile</li>
-        <li className="px-2 py-1 my-2 rounded hover:bg-gray-300">Logout</li>
+        <li className="px-2 py-1 my-2 rounded cursor-pointer hover:bg-gray-300">
+          Profile
+        </li>
+        <li
+          onClick={() => logout(props.history, setState, dispatchHeader)}
+          className="px-2 py-1 my-2 rounded cursor-pointer hover:bg-gray-300"
+        >
+          Logout
+        </li>
       </ul>
     </div>
   );
 }
 
-export default Account;
+export default withRouter(Account);
