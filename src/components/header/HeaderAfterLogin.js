@@ -14,9 +14,9 @@ function HeaderAfterLogin(props) {
   return (
     <div className="fixed w-full p-1 bg-blue-600 ">
       <header className="flex justify-between">
-        <div className="flex space-x-1 left">
+        <div className="flex items-start space-x-1 left">
           <Link to="/">
-            <HoverButton>{<IoIosHome size={20} />} </HoverButton>
+            <HoverButton>{<IoIosHome className="h-6" />} </HoverButton>
           </Link>
           <HoverButton>
             <div className="flex items-center">
@@ -24,11 +24,11 @@ function HeaderAfterLogin(props) {
               <span className="ml-2">Boards</span>
             </div>
           </HoverButton>
-          <input
+          {/* <input
             type="text"
             placeholder="Search cards"
             className="w-48 px-2 text-blue-100 bg-blue-300 focus:outline-none focus:w-64"
-          />
+          /> */}
         </div>
         <div className="absolute header-center">
           <HoverButton>
@@ -38,7 +38,7 @@ function HeaderAfterLogin(props) {
           </HoverButton>
         </div>
         <div className="flex space-x-1 right">
-          <div className="plus">
+          {/* <div className="plus">
             <button
               onClick={() =>
                 props?.header?.dispatchHeader({ type: "show-plus" })
@@ -52,7 +52,7 @@ function HeaderAfterLogin(props) {
                 <HeaderPlus dispatchHeader={props?.header?.dispatchHeader} />
               </div>
             )}
-          </div>
+          </div> */}
           <div className="account">
             <button
               onClick={() =>

@@ -33,6 +33,9 @@ function Board(props) {
     boardReducer,
     initialBoardState
   );
+  useEffect(() => {
+    dispatchBoard({ type: "set-boardid", value: boardId });
+  }, []);
 
   useEffect(() => {
     axios

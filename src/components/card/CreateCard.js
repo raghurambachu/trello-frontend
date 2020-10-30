@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import BoardContext from "../../context/BoardContext";
 
-function validateListForm() {
+function validateCardForm() {
   return Yup.object({
     name: Yup.string()
       .min(2, "Must be 2 characters or more")
@@ -50,7 +50,7 @@ function CreateCard(props) {
   return (
     <div className="add-card">
       <Formik
-        validationSchema={validateListForm}
+        validationSchema={validateCardForm}
         initialValues={{ name: "" }}
         onSubmit={(values, actions) =>
           handleSubmit(

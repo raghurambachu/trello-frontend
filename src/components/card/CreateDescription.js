@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { FaTimes } from "react-icons/fa";
+import BoardContext from "../../context/BoardContext";
 
 function validateListForm() {
   return Yup.object({
     description: Yup.string()
       .min(2, "Must be 2 characters or more")
-      .max(150, "Must be 25 characters or less")
+      .max(150, "Must be 150 characters or less")
       .required("Required"),
   });
 }
@@ -19,16 +20,19 @@ function handleSubmit(
   boardId,
   setEditDesc,
   cardContent,
-  setCardContent
+  dispatchBoard,
+  setDesc
 ) {
-  let card = { description: values.description, id: cardContent?.card?._id };
+  let card = { description: values.description, id: cardContent?._id };
 
   axios
     .put(`${process.env.REACT_APP_BASE_URL}/cards/${boardId}`, { card })
     .then((res) => {
       if (res?.data?.card?._id) {
         actions.setSubmitting(false);
-        setCardContent((ps) => ({ ...ps, card: res?.data?.card }));
+        // setCardContent((ps) => ({ ...ps, card: res?.data?.card }));
+        dispatchBoard({ type: "modify-card", value: res?.data?.card });
+        setDesc(values.description);
         setEditDesc(false);
       } else {
         actions.setSubmitting(false);
@@ -46,18 +50,20 @@ function handleSubmit(
 }
 
 function CreateDescription(props) {
+  const { boardState, dispatchBoard } = useContext(BoardContext);
   return (
     <Formik
       validationSchema={validateListForm}
-      initialValues={{ description: props.cardContent.description }}
+      initialValues={{ description: props.cardContent.description || "" }}
       onSubmit={(values, actions) =>
         handleSubmit(
           values,
           actions,
-          props.boardId,
+          boardState.boardId,
           props.setEditDesc,
           props.cardContent,
-          props.setCardContent
+          dispatchBoard,
+          props.setDesc
         )
       }
     >

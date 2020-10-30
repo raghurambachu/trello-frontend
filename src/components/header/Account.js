@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 import { useContext } from "react";
 import UserContext from "../../context/UserContext";
 import HeaderContext from "../../context/HeaderContext";
+import BoardContext from "../../context/BoardContext";
 
 function logout(history, setState, dispatchHeader) {
   axios
@@ -22,13 +23,13 @@ function logout(history, setState, dispatchHeader) {
 }
 
 function Account(props) {
-  const { setState } = useContext(UserContext);
+  const { state, setState } = useContext(UserContext);
   const { dispatchHeader } = useContext(HeaderContext);
   return (
     <div className="relative w-full p-4 text-gray-700 rounded shadow-lg">
       <div className="absolute top-0 right-0">
         <FaTimes
-          onClick={() => props.dispatchBoard({ type: "close-account" })}
+          onClick={() => dispatchHeader({ type: "close-account" })}
           className="m-4 cursor-pointer"
         />
       </div>
@@ -37,8 +38,8 @@ function Account(props) {
       <div className="flex items-center my-4">
         <BsPersonFill size={30} />
         <div className="ml-4">
-          <h3>Raghuram Bachu</h3>
-          <p>1993raghuram@gmail.com</p>
+          <h3>{state.user.name}</h3>
+          <p>{state.user.email}</p>
         </div>
       </div>
       <hr />

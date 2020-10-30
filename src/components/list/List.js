@@ -9,6 +9,7 @@ import ShowCard from "../card/ShowCard";
 import CreateCard from "../card/CreateCard";
 
 import useOnClickOutside from "../../utils/useOnClickOutside";
+import EditList from "./EditList";
 
 function handleCardClick(card, listName, openCard, setCurrCard) {
   setCurrCard({ listName, card });
@@ -50,13 +51,11 @@ function List(props) {
     <article className="w-64 p-2 text-gray-700 bg-gray-300 rounded-md shadow-sm list ">
       <div className="mb-2" ref={titleRef}>
         {state.editTitle ? (
-          <form onSubmit={() => dispatch({ type: "save-title" })}>
-            <input
-              className="w-full p-1 px-2 border-2 border-gray-700"
-              type="text"
-              value={props.listTitle}
-            />
-          </form>
+          <EditList
+            listId={props.list._id}
+            listTitle={props.listTitle}
+            dispatch={dispatch}
+          />
         ) : (
           <h3
             onClick={() => dispatch({ type: "edit-title" })}
@@ -68,7 +67,7 @@ function List(props) {
       </div>
       <ul className="cards">
         {props?.list?.cards?.map((card) => (
-          <li key={card.name}>
+          <li key={card._id}>
             <Card
               listId={props.list._id}
               onClick={() =>
